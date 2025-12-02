@@ -1,0 +1,76 @@
+<div class="login-page">
+  <div class="login-box">
+
+    <img src="assets/icons/logo.svg" class="white_icon" width="50px" height="50px"/>
+
+    <!-- STEP 1: Email -->
+    @if (step() === 1) {
+      <h1>Sign in to X</h1>
+
+      <form [formGroup]="formEmailGroup" (ngSubmit)="onNext()" class="form">
+        <div class="social-btn google-btn">
+          <span class="g-logo">G</span>
+          <span>Sign in with Google</span>
+        </div>
+
+        <div class="social-btn apple-btn">
+          <span class="apple-logo"></span>
+          <span>Sign in with Apple</span>
+        </div>
+
+        <div class="divider">
+          <span>or</span>
+        </div>
+
+        <input
+          type="text"
+          formControlName="email"
+          placeholder="Phone, email, or username"
+        />
+
+        <button type="submit" class="next-btn">Next</button>
+
+        <button type="button" class="forgot-btn">
+          Forgot password?
+        </button>
+      </form>
+
+      <p class="signup-text">
+        Don't have an account?
+        <a routerLink="/auth/signup">Sign up</a>
+      </p>
+    }
+
+    <!-- STEP 2: Password -->
+    @if (step() === 2) {
+      <h1>Enter your password</h1>
+
+      <div class="email-display">
+        {{ this.formEmailGroup.controls.email.value }}
+      </div>
+
+      <form [formGroup]="formPasswordGroup" (ngSubmit)="onSubmit()" class="form">
+
+        <input
+            type="password"
+            placeholder="Enter your Password"
+            formControlName="password"
+            autofocus
+        />
+
+        <a class="forgot-link" routerLink="/auth/reset">Forgot password?</a>
+
+        <button type="submit" class="login-btn">Log in</button>
+        <button class="back-btn" (click)="backToEmail()">← Back</button>
+      </form>
+
+
+
+      <p class="signup-text">
+        Don't have an account?
+        <a routerLink="/auth/signup">Sign up</a>
+      </p>
+    }
+
+  </div>
+</div>

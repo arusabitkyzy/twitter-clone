@@ -1,0 +1,16 @@
+<div class="news-item">
+  <p>{{item.header}}</p>
+  <div class="news-item-info">
+    <div>
+        @for (person of item.people; track person.id) {
+          <img [src]="person.avatar" class="news-people-avatar">
+        }
+    </div>
+    <span>•</span>
+    <span>{{item.date}}</span>
+    <span>•</span>
+    <span>{{item.category}}</span>
+    <span>•</span>
+    <span>{{item.post_number}} posts</span>
+  </div>
+</div>

@@ -1,0 +1,21 @@
+.news-item {
+  display: flex;
+  flex-direction: column;
+  gap:3px;
+  text-align: left;
+  p {
+    font-weight: bold;
+  }
+}
+.news-item-info {
+  color: gray;
+  display: flex;
+  gap:4px;
+  font-size:12px;
+  align-items: center;
+}
+.news-people-avatar {
+  width: 25px;
+  height: 25px;
+  border-radius: 100%
+}

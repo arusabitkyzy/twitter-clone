@@ -1,0 +1,11 @@
+.container {
+  border-radius: 10px;
+  border: 1.5px rgb(47, 51, 54) solid;
+  padding: 5px 10px 10px 10px;
+  width: 100%;
+}
+.users {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}

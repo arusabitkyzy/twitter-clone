@@ -1,0 +1,10 @@
+<div class="add-post-form">
+  <app-avatar [user]="currentUser"></app-avatar>
+  <form [formGroup]="form" (submit)="onSubmit()">
+    <input type="text" formControlName="contentText" placeholder="What's happening?"/>
+    <div class="divider"></div>
+    <div class="button-container">
+      <button type="submit" [disabled]="isLoading()">Post</button>
+    </div>
+  </form>
+</div>

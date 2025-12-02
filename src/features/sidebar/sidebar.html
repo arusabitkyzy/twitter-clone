@@ -1,0 +1,25 @@
+<img src="assets/icons/logo.svg" alt="logo" class="white_icon logo"/>
+
+@for(menuOption of menuOptions(); track menuOption.name.toLowerCase()) {
+  <div class="menu_option" [ngClass]="{'active': menuOption.isActive}">
+    <img [src]="menuOption.icon" alt="pic" class="white_icon"/>
+    <span>{{menuOption.name}}</span>
+  </div>
+}
+
+@if (currentUser) {
+  <div class="user-profile" (click)="toggleModal()">
+    <app-user [user]="currentUser"></app-user>
+
+    <div>
+      <img
+        src="assets/icons/more.svg"
+        class="white_icon"
+        width="15"
+        height="15"
+      />
+      <app-side-modal [(isOpen)]="isOpen" [modalOptions]="modalOptions()"></app-side-modal>
+    </div>
+  </div>
+}
+

@@ -1,0 +1,16 @@
+.fallback-avatar {
+  background-color: darkorange;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+.avatar {
+  width: 30px;
+  height: 30px;
+  border-radius: 100%;
+}
+.fallback-avatar-text {
+  color: white;
+}

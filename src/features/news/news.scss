@@ -1,0 +1,20 @@
+.news-container {
+  border-radius: 10px;
+  border: 1.5px rgb(47, 51, 54) solid;
+  padding: 2px 10px;
+  width: 100%;
+}
+.news-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.close-icon {
+  filter: invert(100%) sepia(100%) saturate(0%) hue-rotate(0deg);
+  cursor: pointer;
+  padding: 5px;
+  border-radius: 50%;
+}
+.close-icon:hover {
+  background-color: rgba(0,0,0,0.2)
+}

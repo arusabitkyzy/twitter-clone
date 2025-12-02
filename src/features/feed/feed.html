@@ -1,0 +1,24 @@
+<div class="feed-container">
+  <app-add-post></app-add-post>
+  <div class="feed-categories">
+    <div class="feed-category" (click)="changeCategory('RECOMMENDED')">
+      <p class="category-name" [ngClass]="{'active' : category()==='RECOMMENDED'}">For you</p>
+    </div>
+    <div class="feed-category" (click)="changeCategory('FOLLOWING')">
+      <p class="category-name" [ngClass]="{'active' : category()==='FOLLOWING'}">Following</p>
+    </div>
+  </div>
+  <div class="tweets">
+    @if(category()=='RECOMMENDED') {
+      @for(tweet of tweetService.tweets(); track tweet.uid) {
+        <app-post [tweet]="tweet"></app-post>
+      }
+    }
+    @else {
+      <p>{{tweetService.followingTweets().length}}</p>
+      @for(tweet of tweetService.followingTweets(); track tweet.uid) {
+        <app-post [tweet]="tweet"></app-post>
+      }
+    }
+  </div>
+</div>

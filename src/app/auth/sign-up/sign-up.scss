@@ -1,0 +1,119 @@
+.signup-page {
+  height: 100vh;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+
+.white_icon {
+  display: block;
+  margin: 0 auto 20px auto;
+}
+
+h1 {
+  font-size: 28px;
+  font-weight: 800;
+  margin-bottom: 25px;
+  text-align: center;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.input-wrapper {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+
+label {
+  font-size: 14px;
+  color: #71767b;
+  margin-bottom: 6px;
+}
+
+input,
+select {
+  background: transparent;
+  border: 1px solid #2f3336;
+  border-radius: 6px;
+  padding: 14px;
+  font-size: 16px;
+  color: white;
+  outline: none;
+  transition: border 0.2s;
+
+  &:focus {
+    border-color: #1d9bf0;
+  }
+}
+
+.counter {
+  position: absolute;
+  right: 10px;
+  top: 0;
+  color: #71767b;
+  font-size: 14px;
+}
+
+.switch-btn {
+  background: none;
+  border: none;
+  color: #1d9bf0;
+  text-align: right;
+  font-size: 15px;
+  margin-top: -10px;
+  cursor: pointer;
+}
+
+.dob-section {
+  margin-top: 10px;
+
+  h2 {
+    font-size: 18px;
+    font-weight: 700;
+  }
+
+  p {
+    font-size: 14px;
+    color: #71767b;
+    margin-top: 4px;
+    margin-bottom: 12px;
+    line-height: 1.3;
+  }
+}
+
+.dob-grid {
+  display: flex;
+  gap: 10px;
+}
+
+.dob-select {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+
+  label {
+    margin-bottom: 6px;
+  }
+
+  select {
+    padding: 12px;
+  }
+}
+
+.next-btn {
+  margin-top: 20px;
+  padding: 15px;
+  border: none;
+  border-radius: 30px;
+  color: black;
+  font-weight: 700;
+  font-size: 18px;
+  cursor: pointer;
+}

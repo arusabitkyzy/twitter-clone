@@ -1,0 +1,11 @@
+@if(isOpen) {
+<div class="modal-backdrop" (click)="close()"></div>
+  <ul class="modal">
+    @for(modalOption of modalOptions; track modalOption.label) {
+      <li (click)="modalOption.action($event)">
+        <img [src]="modalOption.icon" width="15px" height="15px" />
+        {{modalOption.label}}
+      </li>
+    }
+  </ul>
+}

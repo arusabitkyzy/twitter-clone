@@ -1,0 +1,71 @@
+<div class="signup-page">
+  <div class="signup-box">
+
+    <img src="assets/icons/logo.svg" class="white_icon" width="45" />
+
+    <h1>Create your account</h1>
+
+    <form [formGroup]="form" (submit)="onSubmit()">
+
+      <!-- NAME FIELD -->
+      <div class="input-wrapper">
+        <label>Name</label>
+        <input type="text" formControlName="name" />
+        <span class="counter">{{ form.value.name?.length || 0 }} / 50</span>
+      </div>
+
+      <div class="input-wrapper">
+        <label>Email</label>
+        <input type="text" formControlName="email" />
+      </div>
+
+      <div class="input-wrapper">
+        <label>Password</label>
+        <input type="password" formControlName="password" />
+      </div>
+
+      <div class="input-wrapper">
+        <label>Confirm password</label>
+        <input type="password" formControlName="confirmPassword" />
+      </div>
+
+
+      <!-- DATE OF BIRTH SECTION -->
+      <div class="dob-section">
+        <h2>Date of birth</h2>
+        <p>
+          This will not be shown publicly. Confirm your own age, even if this
+          account is for a business, a pet, or something else.
+        </p>
+
+        <div class="dob-grid">
+
+          <div class="dob-select">
+            <label>Month</label>
+            <select formControlName="month">
+              <option *ngFor="let m of months" [value]="m.value">{{ m.label }}</option>
+            </select>
+          </div>
+
+          <div class="dob-select">
+            <label>Day</label>
+            <select formControlName="day">
+              <option *ngFor="let d of days" [value]="d">{{ d }}</option>
+            </select>
+          </div>
+
+          <div class="dob-select">
+            <label>Year</label>
+            <select formControlName="year">
+              <option *ngFor="let y of years" [value]="y">{{ y }}</option>
+            </select>
+          </div>
+
+        </div>
+      </div>
+
+      <button class="next-btn" type="submit" [disabled]="!isButtonEnabled()" (click)="onSubmit()">Next</button>
+    </form>
+
+  </div>
+</div>

@@ -1,0 +1,52 @@
+:host {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 10px;
+  background-color: black;
+}
+
+.menu_option {
+  display: flex;
+  gap: 15px;
+  align-items: center;
+  padding: 5px 8px;
+  border-radius: 15px;
+
+  img {
+    width: 30px;
+    height: 30px;
+  }
+}
+.white_icon {
+  filter: invert(100%) sepia(100%) saturate(0%) hue-rotate(0deg);
+  position: relative;
+}
+
+
+.logo {
+  width: 50px;
+  height: 50px;
+}
+
+.menu_option:hover {
+  background-color: rgb(47, 51, 54);
+  cursor: pointer;
+}
+
+.user-profile {
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+  padding: 5px;
+  border-radius: 10px;
+  cursor: pointer
+}
+
+.user-profile:hover {
+  background-color: rgb(47, 51, 54)
+}
+.active {
+  font-weight: bold;
+  border: 1px rgb(47, 51, 54) solid;
+}

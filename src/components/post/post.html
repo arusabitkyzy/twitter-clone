@@ -1,0 +1,45 @@
+<div class="post-container">
+  <div class="post">
+    <app-avatar [user]="tweet.author"></app-avatar>
+    <div class="post_content">
+      <div class="post-header">
+        <div class="post_author">
+          <span>{{tweet.author.name}}</span>
+          <span class="grayed-text">@{{tweet.author.username}}</span>
+          <span class="grayed-text">•</span>
+          <span class="grayed-text">{{tweet.createdAt | timePassedSinceCreation}}</span>
+        </div>
+        <div class="more-icon">
+          <img src="assets/icons/more.svg" width="15px" height="15px"/>
+        </div>
+      </div>
+      <div class="post_text">
+        <p>{{tweet.contentText}}</p>
+        <img [src]="tweet.contentImage" class="post-img"/>
+      </div>
+    </div>
+  </div>
+  <div class="post-info">
+    <div class="post-info-detail">
+      <img src="assets/icons/comment-grey.svg" class="icon" />
+      <span>{{tweet.comments}}</span>
+    </div>
+    <div class="post-info-detail">
+      <img src="assets/icons/repost-grey.svg" class="icon"/>
+      <span>{{tweet.reposts}}</span>
+    </div>
+    <div class="post-info-detail" (click)="this.likePost()">
+      <img src="assets/icons/heart-grey.svg" class="icon" [ngClass]="{'heart_icon' : this.isLiked()}"/>
+      <span>{{this.likeCount() }}</span>
+    </div>
+    <div class="post-info-detail">
+      <img src="assets/icons/bar-chart-grey.svg" class="icon"/>
+      <span>{{ tweet.views }}</span>
+    </div>
+    <div class="other-actions">
+      <div class="post-info-detail"><img src="assets/icons/bookmark-grey.svg" class="icon"/></div>
+      <div class="post-info-detail"><img src="assets/icons/share-grey.svg" class="icon"/></div>
+    </div>
+  </div>
+</div>
+

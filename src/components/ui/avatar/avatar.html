@@ -1,0 +1,7 @@
+@if (user?.avatar) {
+  <img [src]="user?.avatar" class="avatar"/>
+} @else {
+  <div class="fallback-avatar avatar">
+    <span class="fallback-avatar-text">{{ user?.name?.charAt(0)?.toUpperCase() }}</span>
+  </div>
+}

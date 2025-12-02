@@ -1,0 +1,10 @@
+<div class="container">
+  <h3>Who to follow</h3>
+  @if(!!recommendations.length) {
+    <div class="users">
+      @for(person of recommendations; track person.uid) {
+        <app-user [user]="person" [isActionInvolved]="true" actionText="Follow" [isVerified]="true"></app-user>
+      }
+    </div>
+  }
+</div>

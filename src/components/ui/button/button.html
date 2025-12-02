@@ -1,0 +1,10 @@
+<button
+  class="base"
+  [ngClass]="[
+    buttonType,
+    size
+  ]"
+  (click)="onClick.emit()"
+>
+  {{ buttonText }}
+</button>

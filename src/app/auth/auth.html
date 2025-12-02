@@ -1,0 +1,14 @@
+<div class="container">
+  <div class="left">
+    <img src="assets/icons/logo.svg"/>
+  </div>
+  <div>
+    <h1>Happening now</h1>
+    <h2>Join today.</h2>
+
+    <app-button buttonText="Create Account" buttonType="primary" size="lg" (onClick)="clickSignUp()"></app-button>
+    <p>Already have an account?</p>
+    <app-button buttonText="Sign in" buttonType="secondary" size="lg" (onClick)="clickLogin()"></app-button>
+  </div>
+</div>
+<router-outlet></router-outlet>
