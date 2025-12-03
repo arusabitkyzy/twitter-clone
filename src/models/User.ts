@@ -19,9 +19,9 @@ export interface UserProfile extends UserProfileCreation {
   backgroundImage?: string;
   location?: string[];
   website?: string;
-  savedTweets: TweetInfo[];
-  repliedTweets: TweetInfo[];
-  repostedTweets: TweetInfo[];
-  likedTweets: TweetInfo[];
+  savedTweets: string[];
+  repliedTweets: string[];
+  repostedTweets: string[];
+  likedTweets: string[];
   username: string;
 }

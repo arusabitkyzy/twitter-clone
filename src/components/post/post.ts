@@ -21,22 +21,72 @@ export class Post {
   @Input() tweet = {} as TweetInfo
   isLiked = signal(false);
   likeCount = signal<number>(0)
+  pending = signal(false);
+
+  isSaved = signal(false);
+  isReposted = signal(false);
+  repostCount = signal<number>(0)
   protected readonly JSON = JSON;
 
   ngOnInit() {
-    const status = this.tweetService.didCurrentUserLikeTweets(this.tweet)
-    this.isLiked.set(status)
+    const likeStatus = this.tweetService.didCurrentUserLikeTweets(this.tweet)
     this.likeCount.set(this.tweet.likes)
+    this.isLiked.set(likeStatus)
+
+    const saveStatus = this.tweetService.didCurrentUserSavedTweet(this.tweet)
+    this.isSaved.set(saveStatus)
   }
 
-  likePost() {
-    if(this.isLiked()) {
-      this.likeCount.update(likes => likes--)
+  async likePost() {
+    if (this.pending()) return;
+    this.pending.set(true);
+
+    // Optimistic UI update
+    const wasLiked = this.isLiked();
+    this.isLiked.set(!wasLiked);
+    this.likeCount.update(likes => {
+      if(wasLiked) {
+        if(likes > 0) {
+          return likes - 1
+        }
+        return likes;
+      }
+      return likes + 1
+    });
+
+    try {
+      await this.tweetService.likeTweet(this.tweet);
+    } finally {
+      this.pending.set(false);
     }
-    else {
-      this.likeCount.update(likes => likes++)
+  }
+
+  async savePost() {
+    const isSaved = this.isSaved();
+    this.isSaved.set(!isSaved);
+
+    // Implement save functionality here
+    this.tweetService.saveTweet(this.tweet);
+  }
+
+  async repostPost() {
+    // Optimistic UI update
+    const wasReposted = this.isReposted();
+    this.isReposted.set(!wasReposted);
+    this.repostCount.update(repost => {
+      if(wasReposted) {
+        if(repost > 0) {
+          return repost - 1
+        }
+        return repost;
+      }
+      return repost + 1
+    });
+
+    try {
+      await this.tweetService.repostTweet(this.tweet);
+    } catch(error) {
+      console.log(error)
     }
-    this.isLiked.set(!this.isLiked)
-    this.tweetService.likeTweet(this.tweet)
   }
 }

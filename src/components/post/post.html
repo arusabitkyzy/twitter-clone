@@ -21,24 +21,26 @@
   </div>
   <div class="post-info">
     <div class="post-info-detail">
-      <img src="assets/icons/comment-grey.svg" class="icon" />
+      <img src="assets/icons/comment-grey.svg" class="icon icon_with_color" />
       <span>{{tweet.comments}}</span>
     </div>
-    <div class="post-info-detail">
-      <img src="assets/icons/repost-grey.svg" class="icon"/>
-      <span>{{tweet.reposts}}</span>
+    <div class="post-info-detail" (click)="this.repostPost()">
+      <img src="assets/icons/repost-grey.svg" class="icon icon_with_color" [ngClass]="{'heart_icon': this.isReposted()}"/>
+      <span>{{this.repostCount() }}</span>
     </div>
-    <div class="post-info-detail" (click)="this.likePost()">
-      <img src="assets/icons/heart-grey.svg" class="icon" [ngClass]="{'heart_icon' : this.isLiked()}"/>
+    <div class="post-info-detail" (click)="this.likePost()" [class.disabled]="pending()">
+      <img src="assets/icons/heart-grey.svg" class="icon icon_with_color" [ngClass]="{'heart_icon': this.isLiked()}" />
       <span>{{this.likeCount() }}</span>
     </div>
     <div class="post-info-detail">
-      <img src="assets/icons/bar-chart-grey.svg" class="icon"/>
+      <img src="assets/icons/bar-chart-grey.svg" class="icon icon_with_color"/>
       <span>{{ tweet.views }}</span>
     </div>
     <div class="other-actions">
-      <div class="post-info-detail"><img src="assets/icons/bookmark-grey.svg" class="icon"/></div>
-      <div class="post-info-detail"><img src="assets/icons/share-grey.svg" class="icon"/></div>
+      <div class="post-info-detail" (click)="this.savePost()">
+        <img src="assets/icons/bookmark-grey.svg" class="icon icon_with_color icon_yellow" [ngClass]="{'heart_icon': this.isSaved()}"/>
+      </div>
+      <div class="post-info-detail"><img src="assets/icons/share-grey.svg" class="icon icon_with_color"/></div>
     </div>
   </div>
 </div>

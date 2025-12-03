@@ -121,45 +121,36 @@ export class TweetServices {
   likeTweet(tweetInfo: TweetInfo) {
     if (!this.currentUser) return;
 
-    const currentUserLikedTweets = this.currentUser.likedTweets ?? [];
+    const currentUserLikedTweets: string[] = this.currentUser.likedTweets ?? [];
     const tweetDocRef = doc(this.firestore, `tweet/${tweetInfo.uid}`);
     const userDocRef = doc(this.firestore, `users/${this.currentUser.uid}`);
 
-    // Check if tweet is already liked by comparing UIDs
-    const isLiked = currentUserLikedTweets.some(tweet => tweet.uid === tweetInfo.uid);
+    const isLiked = currentUserLikedTweets.includes(tweetInfo.uid);
 
     if (isLiked) {
-      // Unlike: remove from the currentUserLikedTweets list
-      const updatedLikedTweets = currentUserLikedTweets.filter(tweet => tweet.uid !== tweetInfo.uid);
-
-      // Update Firestore
+      // Unlike: remove tweet UID
+      const updatedLikedTweets = currentUserLikedTweets.filter(uid => uid !== tweetInfo.uid);
+      console.log(updatedLikedTweets);
       return updateDoc(userDocRef, {
         likedTweets: updatedLikedTweets
       }).then(() => {
-        // Update local state
         if (this.currentUser) {
           this.currentUser.likedTweets = updatedLikedTweets;
         }
-
-        // Decrement like count on tweet
         return updateDoc(tweetDocRef, {
           likes: (tweetInfo.likes ?? 0) - 1
         });
       });
     } else {
-      // Like: add tweetInfo to currentUserLikedTweets
-      const updatedLikedTweets = [...currentUserLikedTweets, tweetInfo];
-
-      // Update Firestore
+      // Like: add tweet UID
+      const updatedLikedTweets = [...currentUserLikedTweets, tweetInfo.uid];
+      console.log(updatedLikedTweets);
       return updateDoc(userDocRef, {
         likedTweets: updatedLikedTweets
       }).then(() => {
-        // Update local state
         if (this.currentUser) {
           this.currentUser.likedTweets = updatedLikedTweets;
         }
-
-        // Increment like count on tweet
         return updateDoc(tweetDocRef, {
           likes: (tweetInfo.likes ?? 0) + 1
         });
@@ -167,11 +158,77 @@ export class TweetServices {
     }
   }
 
-  didCurrentUserLikeTweets(tweetInfo: TweetInfo) {
-    const tweet = this.currentUser?.likedTweets.filter((tweet) => tweet.uid === tweetInfo.uid)
+  didCurrentUserLikeTweets(tweetInfo: TweetInfo): boolean {
+    return this.currentUser?.likedTweets?.includes(tweetInfo.uid) ?? false;
+  }
 
-    // @ts-ignore
-    return tweet?.length > 0
+  saveTweet(tweetInfo: TweetInfo) {
+    if (!this.currentUser) return;
+
+    const currentUserSavedTweets: string[] = this.currentUser.savedTweets ?? [];
+    const userDocRef = doc(this.firestore, `users/${this.currentUser.uid}`);
+    const isSaved = currentUserSavedTweets.includes(tweetInfo.uid);
+
+    if (isSaved) {
+      // Unsave: remove tweet UID
+      const updatedSavedTweets = currentUserSavedTweets.filter(uid => uid !== tweetInfo.uid);
+      return updateDoc(userDocRef, {
+        savedTweets: updatedSavedTweets
+      }).then(() => {
+        if (this.currentUser) {
+          this.currentUser.savedTweets = updatedSavedTweets;
+        }
+      });
+    }
+    else {
+      // Save: add tweet UID
+      const updatedSavedTweets = [...currentUserSavedTweets, tweetInfo.uid];
+      return updateDoc(userDocRef, {
+        savedTweets: updatedSavedTweets
+      }).then(() => {
+        if (this.currentUser) {
+          this.currentUser.savedTweets = updatedSavedTweets;
+        }
+      });
+    }
+  }
+
+  didCurrentUserSavedTweet(tweetInfo: TweetInfo): boolean {
+    return this.currentUser?.savedTweets?.includes(tweetInfo.uid) ?? false;
+  }
+
+  repostTweet(tweetInfo: TweetInfo) {
+    if (!this.currentUser) return;
+
+    const currentUserRepostedTweets: string[] = this.currentUser.repostedTweets ?? [];
+    const userDocRef = doc(this.firestore, `users/${this.currentUser.uid}`);
+
+    const isReposted = currentUserRepostedTweets.includes(tweetInfo.uid);
+    if (isReposted) {
+      const updatedRepostedTweets = currentUserRepostedTweets.filter(uid => uid !== tweetInfo.uid);
+      return updateDoc(userDocRef, {
+        savedTweets: updatedRepostedTweets
+      }).then(() => {
+        if (this.currentUser) {
+          this.currentUser.repostedTweets = updatedRepostedTweets;
+        }
+      });
+    }
+    else {
+      // Save: add tweet UID
+      const updatedRepostedTweets = [...currentUserRepostedTweets, tweetInfo.uid];
+      return updateDoc(userDocRef, {
+        repostedTweets: updatedRepostedTweets
+      }).then(() => {
+        if (this.currentUser) {
+          this.currentUser.repostedTweets = updatedRepostedTweets;
+        }
+      });
+    }
+  }
+
+  didCurrentUserRepostedTweet(tweetInfo: TweetInfo): boolean {
+    return this.currentUser?.repostedTweets?.includes(tweetInfo.uid) ?? false;
   }
 
   // // Add a single tweet
