@@ -5,7 +5,7 @@ import {NgClass} from '@angular/common';
 import {AuthService} from '../../services/auth-service/auth-service';
 import {TweetServices} from '../../services/tweet-service/tweet-services';
 import {Post} from '../../components/post/post';
-
+import {effect} from '@angular/core';
 
 @Component({
   selector: 'app-feed',
@@ -23,11 +23,16 @@ export class Feed {
   tweetService = inject(TweetServices)
 
   constructor() {
-    this.tweetService.loadTweets()
+    effect(() => {
+      if (this.category() === 'RECOMMENDED') {
+        this.tweetService.loadTweets()
+      } else {
+        this.tweetService.loadFollowingTweets()
+      }
+    });
   }
 
   changeCategory(new_category: string) {
     this.category.set(new_category);
   }
-
 }

@@ -33,6 +33,9 @@ export class TweetServices {
 
   loadTweets() {
     this.getAllTweets().subscribe(tweets => this.tweets.set(tweets));
+  }
+
+  loadFollowingTweets() {
     this.getFollowingTweets().subscribe(tweets => this.followingTweets.set(tweets));
   }
 

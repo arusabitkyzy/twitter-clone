@@ -15,7 +15,7 @@
       }
     }
     @else {
-      <p>{{tweetService.followingTweets().length}}</p>
+      <p>{{tweetService.followingTweets().length == 0  ? 'No Following yet' : 'here'}}</p>
       @for(tweet of tweetService.followingTweets(); track tweet.uid) {
         <app-post [tweet]="tweet"></app-post>
       }

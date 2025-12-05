@@ -17,6 +17,8 @@ import {AppStore} from '../../../services/auth-service/auth.store';
 export class AddPost {
   isLoading = signal(false)
   appStore = inject(AppStore);
+  selectedImageUrl = signal<string|null>(null)
+  imagePreview = signal<string | ArrayBuffer | null>(null)
 
   form = new FormGroup({
     contentText: new FormControl('', [Validators.required]),
@@ -33,6 +35,31 @@ export class AddPost {
 
 
   constructor(private authService: AuthService, private tweetService: TweetServices) {
+  }
+
+  onFileSelected(event: any) {
+    const file: File = event.target.files[0];
+    const fileForPreview = (event.target as HTMLInputElement).files?.[0];
+    this.selectedImageUrl.set(file.name)
+    if(fileForPreview) {
+      const reader = new FileReader();
+      reader.onload = () => {
+        this.imagePreview.set(reader.result);
+      };
+      reader.readAsDataURL(fileForPreview);
+    }
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = () => {
+        this.form.patchValue({ contentImage: reader.result as string });
+      };
+      reader.readAsDataURL(file);
+    }
+  }
+
+  removeSelectedImage() {
+    this.form.patchValue({ contentImage: '' });
+    this.imagePreview.set(null);
   }
 
   onSubmit() {
@@ -54,6 +81,7 @@ export class AddPost {
           views: 0,
           replyAllowed: true
         });
+        this.removeSelectedImage()
       })
       .catch((error: any) => {
         console.error('Error adding tweet:', error);
