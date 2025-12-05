@@ -83,6 +83,8 @@ export class Post {
       return repost + 1
     });
 
+    console.log(this.repostCount());
+
     try {
       await this.tweetService.repostTweet(this.tweet);
     } catch(error) {

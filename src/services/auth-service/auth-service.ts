@@ -1,152 +1,101 @@
-import {inject, Injectable, signal} from '@angular/core';
+import {inject, Injectable, signal, Injector} from '@angular/core';
 import {
   Auth,
-  browserSessionPersistence,
-  createUserWithEmailAndPassword, onAuthStateChanged,
+  createUserWithEmailAndPassword,
+  onAuthStateChanged,
   signInWithEmailAndPassword,
   signOut,
-  user,
-  User,
 } from '@angular/fire/auth';
-import { setPersistence } from 'firebase/auth';
-import {BehaviorSubject, from, map, Observable, of, shareReplay, switchMap, tap} from 'rxjs';
-import {doc, docData, Firestore, getDoc, serverTimestamp, setDoc} from '@angular/fire/firestore';
+import {from, Observable} from 'rxjs';
+import {doc, Firestore, getDoc, serverTimestamp, setDoc} from '@angular/fire/firestore';
 import {UserProfile} from '../../models/User';
-import {Router} from '@angular/router';
-import {FirebaseService} from '../firebase-service/firebase-service';
+import {runAsyncInInjectionContext} from '../../helper/injection-context';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
-  user = signal<UserProfile | null>(null);
-  firebaseService = inject(FirebaseService);
+  private auth = inject(Auth);
+  private firestore = inject(Firestore);
+  private injector = inject(Injector);
 
+  user = signal<UserProfile | null>(null);
 
   constructor() {
-    onAuthStateChanged(this.firebaseService.auth, async (authUser) => {
-      if(!authUser) {
-        this.user.set(null)
-        return;
-      }
+    this.initializeAuth();
+  }
 
-      const user = await this.getUserInfo(authUser.uid)
-      this.user.set(user as UserProfile)
-    })
+  private initializeAuth() {
+    // ✅ Use runAsyncInInjectionContext for async Firebase operations
+    onAuthStateChanged(this.auth, (authUser) => {
+      runAsyncInInjectionContext(this.injector, async () => {
+        try {
+          if (!authUser) {
+            this.user.set(null);
+            return;
+          }
+
+          const userProfile = await this.getUserInfo(authUser.uid);
+          this.user.set(userProfile);
+        } catch (error) {
+          console.error('Error in auth state change:', error);
+          this.user.set(null);
+        }
+      });
+    });
   }
 
   async getUserInfo(uid: string): Promise<UserProfile | null> {
-    const userDocRef = doc(this.firebaseService.db, `users/${uid}`);
-    const userDocSnap = await getDoc(userDocRef);
+    return runAsyncInInjectionContext(this.injector, async () => {
+      try {
+        const userDocRef = doc(this.firestore, `users/${uid}`);
+        const userDocSnap = await getDoc(userDocRef);
 
-    if(userDocSnap.exists()) {
-      return userDocSnap.data() as UserProfile;
-    }
-    return null;
+        if (userDocSnap.exists()) {
+          return userDocSnap.data() as UserProfile;
+        }
+        return null;
+      } catch (error) {
+        console.error('Error fetching user info:', error);
+        return null;
+      }
+    });
   }
 
-  // private userSubject = new BehaviorSubject<UserProfile | null>(this.loadUserFromStorage());
-  //
-  // user$: Observable<User | null>;
-  // router = inject(Router);
-  //
-  // constructor(private firebaseAuth: Auth, private firestore: Firestore) {
-  //   this.user$ = user(this.firebaseAuth);
-  //
-  //   this.setSessionStoragePersistence();
-  //
-  //   this.user$
-  //     .pipe(
-  //       tap(user => console.log('Auth state changed:', user?.uid)),
-  //       switchMap(user => user ? this.getUserProfile(user.uid) : of(null)),
-  //       tap(profile => {
-  //         console.log('Profile loaded:', profile?.name);
-  //
-  //         // Update cache + BehaviorSubject
-  //         if (profile) {
-  //           localStorage.setItem('user', JSON.stringify(profile));
-  //         } else {
-  //           localStorage.removeItem('user');
-  //         }
-  //
-  //         this.userSubject.next(profile);
-  //       })
-  //     )
-  //     .subscribe(); // 👈 MUST subscribe so the stream runs
-  // }
-  //
-  // private setSessionStoragePersistence(): void {
-  //   setPersistence(this.firebaseAuth, browserSessionPersistence);
-  // }
-  //
-  // getUser(): UserProfile | null {
-  //   return this.userSubject.value;
-  // }
-  //
-  // getUserProfile(uid: string): Observable<UserProfile | null> {
-  //   const userDocRef = doc(this.firestore, `users/${uid}`);
-  //   return docData(userDocRef).pipe(
-  //     map(data => data ? data as UserProfile : null)
-  //   );
-  // }
-  //
-  // private loadUserFromStorage(): UserProfile | null {
-  //   const userJson = localStorage.getItem('user');
-  //
-  //   if (!userJson) return null;         // null or missing key
-  //   if (userJson === 'undefined') return null; // invalid string
-  //
-  //   try {
-  //     return JSON.parse(userJson);
-  //   } catch (e) {
-  //     console.warn('Failed to parse user from storage:', userJson);
-  //     return null;
-  //   }
-  // }
-  //
-  //
-  // isLoggedIn(): Observable<boolean> {
-  //   return this.user$.pipe(map(user => !!user));
-  // }
-  //
-  // register(email: string, password: string, name: string, birthday: Date): Observable<void> {
-  //   const promise = createUserWithEmailAndPassword(
-  //     this.firebaseAuth,
-  //     email,
-  //     password
-  //   ).then(async userCredential => {
-  //     const uid = userCredential.user.uid;
-  //
-  //     const profile: Partial<UserProfile> = {
-  //       uid,
-  //       email,
-  //       name,
-  //       birthday,
-  //       createdAt: serverTimestamp()
-  //     };
-  //
-  //     await setDoc(doc(this.firestore, `users/${uid}`), profile);
-  //     console.log('User created in Auth and Firestore');
-  //   });
-  //
-  //   return from(promise);
-  // }
-  //
-  // login(email: string, password: string): Observable<void> {
-  //   return from(
-  //     signInWithEmailAndPassword(this.firebaseAuth, email, password).then(() =>
-  //       console.log('Login successful')
-  //     )
-  //   );
-  // }
-  //
-  // logout(): Observable<void> {
-  //   return from(
-  //     signOut(this.firebaseAuth).then(() => {
-  //       localStorage.removeItem('user');
-  //       this.userSubject.next(null);
-  //       this.router.navigate(['/auth/login']);
-  //     })
-  //   );
-  // }
+  async login(email: string, password: string) {
+    return runAsyncInInjectionContext(this.injector, async () => {
+      return signInWithEmailAndPassword(this.auth, email, password);
+    });
+  }
+
+  async logout() {
+    return runAsyncInInjectionContext(this.injector, async () => {
+      return signOut(this.auth);
+    });
+  }
+
+  register(email: string, password: string, name: string, birthday: Date): Observable<void> {
+    const promise = runAsyncInInjectionContext(this.injector, async () => {
+      const userCredential = await createUserWithEmailAndPassword(
+        this.auth,
+        email,
+        password
+      );
+
+      const uid = userCredential.user.uid;
+
+      const profile: Partial<UserProfile> = {
+        uid,
+        email,
+        name,
+        birthday,
+        createdAt: serverTimestamp()
+      };
+
+      await setDoc(doc(this.firestore, `users/${uid}`), profile);
+      console.log('User created in Auth and Firestore');
+    });
+
+    return from(promise);
+  }
 }

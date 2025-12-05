@@ -43,21 +43,27 @@
           <div class="dob-select">
             <label>Month</label>
             <select formControlName="month">
-              <option *ngFor="let m of months" [value]="m.value">{{ m.label }}</option>
+              @for (m of months; track m) {
+                <option [value]="m.value">{{ m.label }}</option>
+              }
             </select>
           </div>
 
           <div class="dob-select">
             <label>Day</label>
             <select formControlName="day">
-              <option *ngFor="let d of days" [value]="d">{{ d }}</option>
+              @for (d of days; track d) {
+                <option [value]="d">{{ d }}</option>
+              }
             </select>
           </div>
 
           <div class="dob-select">
             <label>Year</label>
             <select formControlName="year">
-              <option *ngFor="let y of years" [value]="y">{{ y }}</option>
+              @for (y of years; track y) {
+                <option [value]="y">{{ y }}</option>
+              }
             </select>
           </div>
 

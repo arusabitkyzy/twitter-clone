@@ -6,6 +6,7 @@ import {ModalOption, SideModal} from '../../components/ui/side-modal/side-modal'
 import {toSignal} from '@angular/core/rxjs-interop';
 import {Router} from '@angular/router';
 import {UserProfile} from '../../models/User';
+import {AppStore} from '../../services/auth-service/auth.store';
 
 @Component({
   selector: 'app-sidebar',
@@ -15,14 +16,10 @@ import {UserProfile} from '../../models/User';
 })
 
 export class Sidebar {
-  auth = inject(AuthService);
-  currentUser: UserProfile | null = null
+  appStore = inject(AppStore);
   isOpen = signal(false);
   path = signal('')
-
-  ngOnInit() {
-    this.currentUser = this.auth.getUser()
-  }
+  currentUser = computed(() => this.appStore.user());
 
   constructor(private router: Router) {
     this.path.set(this.router.url)
@@ -33,7 +30,7 @@ export class Sidebar {
   }
 
   modalOptions = computed<ModalOption[]>(() => {
-    const username:string = this.currentUser?.username || 'user'
+    const username:string = this.currentUser()()?.username || 'user'
 
     return [
       {
@@ -49,7 +46,7 @@ export class Sidebar {
   })
 
   onLogout() {
-    this.auth.logout().subscribe();
+    this.appStore.logout()
   }
 
   menuOptions = computed(() => {

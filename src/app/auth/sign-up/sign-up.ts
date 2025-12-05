@@ -8,12 +8,12 @@ import {
   Validators
 } from '@angular/forms';
 import { AuthService } from '../../../services/auth-service/auth-service';
-import { CommonModule } from '@angular/common';
+
 import {toSignal} from '@angular/core/rxjs-interop';
 
 @Component({
   selector: 'app-sign-up',
-  imports: [CommonModule, FormsModule, ReactiveFormsModule, RouterLink],
+  imports: [FormsModule, ReactiveFormsModule, RouterLink],
   templateUrl: './sign-up.html',
   styleUrl: './sign-up.scss',
 })

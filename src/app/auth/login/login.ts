@@ -2,6 +2,7 @@ import { Component, inject, signal } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { AuthService } from '../../../services/auth-service/auth-service';
+import {AppStore} from '../../../services/auth-service/auth.store';
 
 @Component({
   selector: 'app-login',
@@ -15,6 +16,7 @@ export class Login {
 
   private router = inject(Router);
   private authService = inject(AuthService);
+  private appStore = inject(AppStore);
 
   formEmailGroup = new FormGroup({
     email: new FormControl('', Validators.required)
@@ -47,16 +49,10 @@ export class Login {
     const email = this.formEmailGroup.controls.email.value!;
     const password = passwordCtrl.value!;
 
-    this.authService.login(email, password).subscribe({
-      next: () => {
-        console.log('Login successful');
+    console.log(email)
+    console.log(password)
 
-        this.router.navigate(['/']);
-      },
-      error: (err) => {
-        console.error('Login error:', err);
-      },
-    });
+    this.appStore.login(email, password);
   }
 
   // Optional Back button

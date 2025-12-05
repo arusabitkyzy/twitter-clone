@@ -2,13 +2,13 @@
   <app-avatar [user]="user"></app-avatar>
   <div class="name-info">
     <div class="name">
-      <p>{{user.name }}</p>
+      <p>{{user?.name }}</p>
       @if(isVerified) {
         <img src="assets/icons/verified.png" width="20px" height="20px"/>
       }
     </div>
 
-    <p class="username">&#64;{{user.username}}</p>
+    <p class="username">&#64;{{user?.username}}</p>
   </div>
   @if(isActionInvolved) {
     <button (click)="actionFunc" class="action">{{actionText}}</button>

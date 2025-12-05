@@ -12,7 +12,7 @@ import {UserProfile} from '../../../models/User';
   standalone: true,
 })
 export class User {
-  @Input() user = {} as UserProfile;
+  @Input() user = {} as UserProfile | null;
   @Input() isVerified = false;
   @Input() isActionInvolved = false;
   @Input() actionText = ""

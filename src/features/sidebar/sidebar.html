@@ -7,9 +7,9 @@
   </div>
 }
 
-@if (currentUser) {
+@if (currentUser()) {
   <div class="user-profile" (click)="toggleModal()">
-    <app-user [user]="currentUser"></app-user>
+    <app-user [user]="currentUser()()"></app-user>
 
     <div>
       <img

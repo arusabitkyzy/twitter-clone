@@ -1,19 +1,20 @@
 import {inject} from '@angular/core';
-import {AuthService} from './auth-service';
-import {Router} from '@angular/router';
-import {map} from 'rxjs';
+import {CanActivateFn, Router} from '@angular/router';
+import {AppStore} from './auth.store';
 
-export const canActivateAuth= () => {
-  const authService = inject(AuthService);
+export const redirectLoginIfNotAuthenticated: CanActivateFn = async (route, state) => {
+  const store = inject(AppStore);
   const router = inject(Router);
 
-  return authService.isLoggedIn().
-    pipe(
-      map(isLoggedIn => {
-        if (isLoggedIn) {
-          return true;
-        }
-        return router.createUrlTree(['auth/login']);
-      })
-  );
-}
+  const user = store.user(); // This returns the value, not a signal
+
+  console.log('Guard check - User:', user);
+
+  if (!user) {
+    console.log('No user, redirecting to login');
+    return router.parseUrl('/auth/login');
+  }
+
+  console.log('User authenticated, allowing access');
+  return true;
+};

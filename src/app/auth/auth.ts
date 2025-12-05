@@ -26,8 +26,4 @@ export class Auth {
     console.log('clickLogin');
     return this.router.navigate(['/auth/login']);
   }
-
-  closeModal() {
-    return this.router.navigate(['/auth']); // Navigate back to auth page
-  }
 }

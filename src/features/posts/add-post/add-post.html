@@ -1,5 +1,5 @@
 <div class="add-post-form">
-  <app-avatar [user]="currentUser"></app-avatar>
+  <app-avatar [user]="currentUser()()"></app-avatar>
   <form [formGroup]="form" (submit)="onSubmit()">
     <input type="text" formControlName="contentText" placeholder="What's happening?"/>
     <div class="divider"></div>

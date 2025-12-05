@@ -1,10 +1,11 @@
-import {Component, signal} from '@angular/core';
+import {Component, computed, inject, signal} from '@angular/core';
 import {FormControl, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
 import {AuthService} from '../../../services/auth-service/auth-service';
 import {UserProfile} from '../../../models/User';
 import {Avatar} from '../../../components/ui/avatar/avatar';
 import {TweetServices} from '../../../services/tweet-service/tweet-services';
 import {TweetInfo} from '../../../models/Tweet';
+import {AppStore} from '../../../services/auth-service/auth.store';
 
 @Component({
   selector: 'app-add-post',
@@ -14,8 +15,8 @@ import {TweetInfo} from '../../../models/Tweet';
   imports: [ReactiveFormsModule, Avatar]
 })
 export class AddPost {
-  currentUser: UserProfile | null;
   isLoading = signal(false)
+  appStore = inject(AppStore);
 
   form = new FormGroup({
     contentText: new FormControl('', [Validators.required]),
@@ -28,8 +29,10 @@ export class AddPost {
     replyAllowed: new FormControl(true),
   });
 
+  currentUser = computed(() => this.appStore.user());
+
+
   constructor(private authService: AuthService, private tweetService: TweetServices) {
-    this.currentUser = authService.getUser()
   }
 
   onSubmit() {

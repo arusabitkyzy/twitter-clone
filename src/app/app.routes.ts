@@ -5,7 +5,7 @@ import {MainLayout} from './main-layout/main-layout';
 import {AuthLayout} from './auth-layout/auth-layout';
 import {SignUp} from './auth/sign-up/sign-up';
 import {Login} from './auth/login/login';
-import {canActivateAuth} from '../services/auth-service/access.guard';
+import { redirectLoginIfNotAuthenticated} from '../services/auth-service/access.guard';
 
 export const routes: Routes = [
   {
@@ -14,7 +14,7 @@ export const routes: Routes = [
     children: [
       { path: '', component: Home },
     ],
-    canActivate: [canActivateAuth]
+    canActivate: [redirectLoginIfNotAuthenticated]
   },
   {
     path: 'auth',
@@ -23,6 +23,6 @@ export const routes: Routes = [
       { path: '', component: Auth },
       { path: 'signup', component: SignUp },
       { path: 'login', component: Login }
-    ]
+    ],
   }
 ];
