@@ -35,6 +35,10 @@ export class Post {
 
     const saveStatus = this.tweetService.didCurrentUserSavedTweet(this.tweet)
     this.isSaved.set(saveStatus)
+
+    const repostStatus = this.tweetService.didCurrentUserRepostedTweet(this.tweet)
+    this.repostCount.set(this.tweet.reposts)
+    this.isReposted.set(repostStatus)
   }
 
   async likePost() {

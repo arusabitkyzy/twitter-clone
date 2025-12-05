@@ -19,7 +19,7 @@ export class Sidebar {
   appStore = inject(AppStore);
   isOpen = signal(false);
   path = signal('')
-  currentUser = computed(() => this.appStore.user());
+  currentUser = this.appStore.user()
 
   constructor(private router: Router) {
     this.path.set(this.router.url)
@@ -30,7 +30,7 @@ export class Sidebar {
   }
 
   modalOptions = computed<ModalOption[]>(() => {
-    const username:string = this.currentUser()()?.username || 'user'
+    const username:string = this.currentUser()?.username || 'user'
 
     return [
       {
