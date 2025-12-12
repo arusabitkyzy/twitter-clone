@@ -1,37 +1,8 @@
-<div class="add-post-form">
-  <app-avatar [user]="currentUser()()"></app-avatar>
-  <form [formGroup]="form" (submit)="onSubmit()">
-    <input type="text" formControlName="contentText" placeholder="What's happening?"/>
-    <div class="divider"></div>
-    <div>
-      @if(!selectedImageUrl()) {
-        <div class="custom-file-upload" (click)="fileInput.click()">
-          <i class="material-icons">image</i>
-          <span>{{ selectedImageUrl() || "Choose an image" }}</span>
-        </div>
-
-        <input
-          type="file"
-          #fileInput
-          (change)="onFileSelected($event)"
-          accept="image/*"
-          hidden
-        />
-      }
-      @if(selectedImageUrl()) {
-        <div>
-          <img [src]="imagePreview()" alt="Image Preview" width="100" height="auto"/>
-          <button type="button" (click)="removeSelectedImage()">Remove</button>
-        </div>
-      }
-    </div>
-    <div class="button-container">
-      <button type="submit" [disabled]="isLoading()">Post</button>
-    </div>
-  </form>
+<div class="container">
+  <app-post-editor
+    placeholder="What's happening?"
+    submitLabel="Post"
+    mode="postCreation"
+    (submitted)="onSubmit($event)"
+  />
 </div>
-@if(isLoading()) {
-  <div class="loading-bar-container">
-    <div class="loading-bar"></div>
-  </div>
-}

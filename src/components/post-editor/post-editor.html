@@ -1,0 +1,36 @@
+<div class="form">
+  <app-avatar [user]="currentUser()"></app-avatar>
+  <form [formGroup]="form" (submit)="onSubmit()">
+    <input type="text" formControlName="contentText" [placeholder]="placeholder()"/>
+    <div class="divider"></div>
+    <div>
+      @if(!selectedImageUrl()) {
+        <div class="custom-file-upload" (click)="fileInput.click()">
+          <i class="material-icons">image</i>
+        </div>
+
+        <input
+          type="file"
+          #fileInput
+          (change)="onFileSelected($event)"
+          accept="image/*"
+          hidden
+        />
+      }
+      @if(imagePreview()) {
+        <div>
+          <img [src]="imagePreview()" alt="Image Preview" width="100" height="auto"/>
+          <img src="/assets/icons/x-solid-full.svg" class="icon white_icon" (click)="removeSelectedImage()" width="15px" height="15px"/>
+        </div>
+      }
+    </div>
+    <div class="button-container">
+      <button type="submit" [disabled]="isLoading()">{{submitLabel()}}</button>
+    </div>
+  </form>
+</div>
+@if(isLoading()) {
+  <div class="loading-bar-container">
+    <div class="loading-bar"></div>
+  </div>
+}

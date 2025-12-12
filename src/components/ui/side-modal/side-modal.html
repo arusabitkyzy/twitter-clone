@@ -1,9 +1,12 @@
-@if(isOpen) {
-<div class="modal-backdrop" (click)="close()"></div>
-  <ul class="modal">
-    @for(modalOption of modalOptions; track modalOption.label) {
-      <li (click)="modalOption.action($event)">
-        <img [src]="modalOption.icon" width="15px" height="15px" />
+<div (click)="toggleModal()" class="modal-trigger">
+  <ng-content></ng-content>
+</div>
+@if(isOpen()) {
+  <div class="modal-backdrop" (click)="close()"></div>
+  <ul class="modal" (click)="onModalClick($event)">
+    @for(modalOption of modalOptions(); track modalOption.label) {
+      <li (click)="modalOption.action($event)" class="modal_option">
+        <img [src]="modalOption.icon" width="15" height="15" alt="" />
         {{modalOption.label}}
       </li>
     }

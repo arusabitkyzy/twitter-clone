@@ -1,4 +1,12 @@
-<div class="modal-backdrop" (click)="close()"></div>
-<div class="modal-content">
-  <ng-content></ng-content>
+<div (click)="modalService.toggleModal(modalId)">
+  <ng-content select="[trigger]"></ng-content>
 </div>
+
+@if(isThisModalOpen()) {
+  <div class="modal-backdrop" (click)="modalService.closeModal(modalId)"></div>
+  <div class="modal-content">
+    @defer (when isThisModalOpen()) {
+      <ng-content select="[content]"></ng-content>
+    }
+  </div>
+}

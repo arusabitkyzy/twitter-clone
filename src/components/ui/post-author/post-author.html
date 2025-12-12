@@ -1,0 +1,11 @@
+<div>
+  <div class="post-header">
+    <div class="post_author">
+      <span>{{tweet.author.name}}</span>
+      <span class="grayed-text">@{{tweet.author.username}}</span>
+      <span class="grayed-text">•</span>
+      <span class="grayed-text">{{tweet.createdAt | timePassedSinceCreation}}</span>
+    </div>
+    <app-post-action-modal [tweet]="tweet" />
+  </div>
+</div>

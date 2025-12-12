@@ -26,17 +26,6 @@
   display: flex;
   gap:2px;
 }
-.more-icon {
-  filter: invert(100%) sepia(100%) saturate(0%) hue-rotate(0deg);
-  cursor: pointer;
-  width: 20px;
-  height: 20px;
-  margin-top: 2px;
-  :hover {
-    background-color: lightgray;
-    border-radius: 50%;
-  }
-}
 .heart_icon {
   filter: invert(26%) sepia(98%) saturate(7458%) hue-rotate(356deg) brightness(91%) contrast(118%) !important;
 }
@@ -60,9 +49,6 @@
   width: 20px;
   height: 20px;
 }
-.icon_with_color {
-  filter: invert(100%) sepia(100%) saturate(0%) hue-rotate(0deg);
-}
 .icon:hover {
   filter: invert(26%) sepia(98%) saturate(7458%) hue-rotate(356deg) brightness(91%) contrast(118%) !important;
 }
@@ -80,3 +66,67 @@
   border-radius: 100%;
 }
 .icon_yellow path { fill: yellow; }
+
+.mat-icon {
+  cursor: pointer;
+  padding: 2px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.mat-icon:hover {
+  cursor: pointer;
+}
+
+.mat-icon-red:hover {
+  color: rgb(255 20 147);
+  background-color: rgba(255,20,147, 0.3);
+  border-radius: 50%;
+  margin: 0 auto;
+}
+
+.mat-icon-green:hover {
+  color: rgb(0 128 0);
+  background-color: rgba(0,128,0, 0.3);
+  border-radius: 50%;
+  margin: 0 auto;
+}
+
+.mat-icon-yellow:hover {
+  color: rgb(255,255,0);
+  background-color: rgba(255,255,0, 0.3);
+  border-radius: 50%;
+  margin: 0 auto;
+}
+
+.mat-icon-blue:hover {
+  color: rgb(29, 155, 240);
+  background-color: rgba(29, 155, 240, 0.3);
+  border-radius: 50%;
+  margin: 0 auto;
+}
+
+.counter {
+  margin-top: 5px
+}
+
+.liked {
+  color: deeppink;
+}
+
+.not-selected{
+  color: grey;
+}
+
+.reposted {
+  color: green;
+}
+
+.saved {
+  color: yellow;
+}
+.share {
+  color: rgb(29, 155, 240)
+}

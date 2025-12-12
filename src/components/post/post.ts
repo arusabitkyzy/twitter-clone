@@ -1,16 +1,23 @@
-import {Component, inject, Input, signal} from '@angular/core';
-import {TimePassedSinceCreationPipe} from '../../helper/time-passed-since-creation-pipe';
+import {Component, computed, inject, input, Input, signal} from '@angular/core';
 import {Avatar} from '../ui/avatar/avatar';
 import {TweetInfo} from '../../models/Tweet';
 import {TweetServices} from '../../services/tweet-service/tweet-services';
-import {NgClass} from '@angular/common';
+import { MatIconModule } from '@angular/material/icon';
+import {CommentsModal} from '../../features/comments/comments-modal/comments-modal';
+import {Modal} from '../modal/modal';
+import {PostAuthor} from '../ui/post-author/post-author';
+import {PostEditor} from '../post-editor/post-editor';
+import {PostContent} from '../post-content/post-content';
+
+type PostView = 'detailed' | 'shortcut';
 
 @Component({
   selector: 'app-post',
   imports: [
-    TimePassedSinceCreationPipe,
-    Avatar,
-    NgClass
+    MatIconModule,
+    Modal,
+    PostContent,
+    CommentsModal,
   ],
   templateUrl: './post.html',
   styleUrl: './post.scss',
@@ -18,6 +25,7 @@ import {NgClass} from '@angular/common';
 })
 export class Post {
   tweetService = inject(TweetServices)
+
   @Input() tweet = {} as TweetInfo
   isLiked = signal(false);
   likeCount = signal<number>(0)
@@ -26,7 +34,9 @@ export class Post {
   isSaved = signal(false);
   isReposted = signal(false);
   repostCount = signal<number>(0)
-  protected readonly JSON = JSON;
+  commentsCount = signal<number>(0)
+
+  mode = input<PostView>('detailed')
 
   ngOnInit() {
     const likeStatus = this.tweetService.didCurrentUserLikeTweets(this.tweet)
@@ -39,6 +49,11 @@ export class Post {
     const repostStatus = this.tweetService.didCurrentUserRepostedTweet(this.tweet)
     this.repostCount.set(this.tweet.reposts)
     this.isReposted.set(repostStatus)
+
+    const commentsCount = this.tweet.comments.length
+    this.commentsCount.set(commentsCount)
+
+    console.log(this.mode())
   }
 
   async likePost() {
@@ -95,4 +110,5 @@ export class Post {
       console.log(error)
     }
   }
+
 }

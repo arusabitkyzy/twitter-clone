@@ -8,18 +8,19 @@
 }
 
 @if (currentUser()) {
-  <div class="user-profile" (click)="toggleModal()">
-    <app-user [user]="currentUser()"></app-user>
+      <app-side-modal [modalOptions]="modalOptions()">
+        <div class="user-profile" (click)="toggleModal()">
+          <app-user [user]="currentUser()"></app-user>
 
-    <div>
-      <img
-        src="assets/icons/more.svg"
-        class="white_icon"
-        width="15"
-        height="15"
-      />
-      <app-side-modal [(isOpen)]="isOpen" [modalOptions]="modalOptions()"></app-side-modal>
-    </div>
-  </div>
+          <div>
+            <img
+              src="assets/icons/more.svg"
+              class="white_icon"
+              width="15"
+              height="15"
+            />
+          </div>
+        </div>
+      </app-side-modal>
 }
 

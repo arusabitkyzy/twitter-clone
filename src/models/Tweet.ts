@@ -7,7 +7,7 @@ export interface TweetInfo {
   contentText: string,
   contentImage?: string,
   createdAt: Date,
-  comments: number,
+  comments: TweetInfo[],
   likes: number,
   reposts: number,
   views: number,

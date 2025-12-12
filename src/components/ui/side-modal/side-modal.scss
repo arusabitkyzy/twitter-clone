@@ -9,9 +9,10 @@
   box-shadow: rgba(255, 255, 255, 0.2) 0 0 15px, rgba(255, 255, 255, 0.15) 0 0 3px 1px;
   border-radius: 10px;
   padding: 10px 0;
-  background: black
+  background: black;
+  z-index: 10
 }
-li {
+.modal_option {
   width: 100%;
   padding: 5px 0;
   text-align: left;
@@ -20,9 +21,15 @@ li {
   text-decoration: none;
   cursor: pointer;
 }
-li:hover {
+.modal_option:hover {
+  cursor: pointer;
   background-color: rgb(47, 51, 54)
 }
 ul {
   list-style-type: none;
+}
+.modal-trigger {
+  cursor: pointer;
+  width: 20px;
+  height: 20px;
 }

@@ -1,18 +1,23 @@
-import {Component, inject} from '@angular/core';
-
-import {Router} from '@angular/router';
+import {Component, Input, inject, computed} from '@angular/core';
+import {ModalService} from '../../services/modal-service/modal-service';
 
 @Component({
   selector: 'app-modal',
-  standalone: true,
-  imports: [],
   templateUrl: './modal.html',
   styleUrl: './modal.scss',
+  standalone: true
 })
 export class Modal {
-  private router = inject(Router);
+  @Input() modalId!: string;
+  modalService = inject(ModalService);
 
-  close() {
-    return this.router.navigate([{ outlets: { modal: null } }]);
+  ngOnInit() {
+    console.log('Modal initialized with ID:', this.modalId);
   }
+
+  isThisModalOpen = computed(() => {
+    const isOpen = this.modalService.currentModalId() === this.modalId;
+    console.log('Modal check:', this.modalId, 'isOpen:', isOpen);
+    return isOpen;
+  });
 }

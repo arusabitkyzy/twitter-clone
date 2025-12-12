@@ -2,12 +2,11 @@
 import {computed, effect, inject, Injectable, signal} from '@angular/core';
 import {TweetInfo} from '../../models/Tweet';
 import {AuthService} from '../auth-service/auth-service';
-import {addDoc, collection, doc, Firestore, getDoc, getDocs, updateDoc} from '@angular/fire/firestore';
+import {addDoc, collection, doc, Firestore, getDoc, getDocs, updateDoc, arrayUnion} from '@angular/fire/firestore';
 import {forkJoin, from, map, Observable, of, switchMap} from 'rxjs';
 import {UserProfile} from '../../models/User';
 import {serverTimestamp} from '@angular/fire/firestore';
 import {AppStore} from '../auth-service/auth.store';
-
 @Injectable({
   providedIn: 'root'
 })
@@ -32,11 +31,11 @@ export class TweetServices {
   }
 
   loadTweets() {
-    this.getAllTweets().subscribe(tweets => this.tweets.set(tweets));
+    this.getAllTweets().subscribe(tweets => this.tweets.set(tweets.sort()))
   }
 
   loadFollowingTweets() {
-    this.getFollowingTweets().subscribe(tweets => this.followingTweets.set(tweets));
+    this.getFollowingTweets().subscribe(tweets => this.followingTweets.set(tweets.sort()));
   }
 
   getAllTweets(): Observable<TweetInfo[]> {
@@ -109,7 +108,7 @@ export class TweetServices {
     );
   }
 
-  addTweet(tweetInfo: TweetInfo) {
+  async addTweet(tweetInfo: TweetInfo) {
     const user = this.currentUser(); // Call as function
     if (!user) return Promise.reject('User not authenticated');
 
@@ -117,6 +116,7 @@ export class TweetServices {
 
     return addDoc(collection(this.firestore, 'tweet'), {
       ...tweetInfo,
+      comments: [],
       author: userDocRef,
       createdAt: serverTimestamp(),
     }).then(async (docRef) => {
@@ -126,6 +126,7 @@ export class TweetServices {
       this.tweets.update(prev => [
         {
           ...tweetInfo,
+          comments: [],
           uid: docRef.id,
           author,
           createdAt: new Date()
@@ -241,5 +242,49 @@ export class TweetServices {
     this.followingTweets.update(tweets =>
       tweets.map(t => (t.uid === tweetUid ? { ...t, ...updates } : t))
     );
+  }
+
+  async addComment(tweetId: string, comment: TweetInfo) {
+    const userSignal = this.currentUser();
+    const user = userSignal?.();
+    if (!user) return Promise.reject('User not authenticated');
+
+    const userDocRef = doc(this.firestore, `users/${user.uid}`);
+    const tweetDocRef = doc(this.firestore, `tweet/${tweetId}`);
+
+    // Resolve author first
+    const authorSnap = await getDoc(userDocRef);
+    const author = authorSnap.data() as UserProfile;
+
+    // Create the comment object
+    const newComment = {
+      uid: doc(collection(this.firestore, '_')).id, // Generate unique ID
+      contentText: comment.contentText,
+      contentImage: comment.contentImage || null,
+      author: author, // Embed full author object
+      createdAt: new Date(),
+      likes: 0,
+      reposts: 0,
+      views: 0,
+      comments: [], // Пустой массив для вложенных комментов (если будут)
+    };
+
+    console.log(tweetDocRef);
+    // Add comment to the tweet's comments array using arrayUnion
+    await updateDoc(tweetDocRef, {
+      comments: arrayUnion(newComment)
+    });
+
+    // Get updated tweet data
+    const tweetSnap = await getDoc(tweetDocRef);
+    const updatedTweet = tweetSnap.data() as TweetInfo;
+
+    console.log(updatedTweet);
+    // Update local signal with the full comments array
+    this.updateTweetInSignal(tweetId, {
+      comments: updatedTweet.comments
+    });
+
+    return newComment;
   }
 }

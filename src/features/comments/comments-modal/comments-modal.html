@@ -1,0 +1,29 @@
+<div class="comments-modal">
+  <div class="header">
+    <div (click)="modalService.closeModal()">
+      <mat-icon
+        fontSet="material-icons"
+        style="font-size: 20px; color: white; cursor: pointer"
+      >
+        close
+      </mat-icon>
+    </div>
+    <button>Drafts</button>
+  </div>
+
+  <div class="modal-content">
+    <!-- Show the parent tweet content (non-interactive) -->
+    <div class="parent-tweet">
+      <app-post-content [tweet]="tweet" mode="shortcut"/>
+      <div class="reply-line"></div>
+    </div>
+
+    <!-- Reply form -->
+    <app-post-editor
+      placeholder="Post your reply"
+      (submitted)="onSubmit($event)"
+      submitLabel="Reply"
+      mode="commentCreation"
+    />
+  </div>
+</div>

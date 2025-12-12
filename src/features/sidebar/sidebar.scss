@@ -18,15 +18,11 @@
     height: 30px;
   }
 }
-.white_icon {
-  filter: invert(100%) sepia(100%) saturate(0%) hue-rotate(0deg);
-  position: relative;
-}
-
 
 .logo {
   width: 50px;
   height: 50px;
+  position: relative;
 }
 
 .menu_option:hover {

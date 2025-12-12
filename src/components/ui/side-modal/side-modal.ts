@@ -1,5 +1,4 @@
-import {Component, EventEmitter, Input, Output} from '@angular/core';
-import {UserProfile} from '../../../models/User';
+import {Component, input, output, model, signal} from '@angular/core';
 
 export interface ModalOption {
   label: string;
@@ -14,13 +13,21 @@ export interface ModalOption {
   styleUrl: './side-modal.scss',
 })
 export class SideModal {
-  @Input() isOpen = false
-  @Input() currentUser: UserProfile | null = null;
-  @Input() modalOptions: ModalOption[] = []
-  @Output() isOpenChange = new EventEmitter<boolean>();
+  isOpen = signal<boolean>(false);
+
+  modalOptions = input<ModalOption[]>([]);
+  onClose = output<void>();
+
+  toggleModal() {
+    this.isOpen.update(value => !value);
+  }
 
   close() {
-    this.isOpen = false
-    this.isOpenChange.emit(this.isOpen);
+    this.isOpen.set(false);
+    this.onClose.emit();
+  }
+
+  onModalClick(event: Event) {
+    event.stopPropagation();
   }
 }

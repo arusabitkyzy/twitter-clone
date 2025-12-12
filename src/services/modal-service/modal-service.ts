@@ -4,15 +4,25 @@ import {Injectable, signal} from '@angular/core';
   providedIn: 'root',
 })
 export class ModalService {
-  isOpen = signal<boolean>(false)
+  currentModalId = signal<string | null>(null);
 
-  constructor() {}
-
-  closeModal() {
-    return this.isOpen.set(true)
+  closeModal(modalId?: string) {
+    // Only close if this is the currently open modal
+    if (!modalId || this.currentModalId() === modalId) {
+      this.currentModalId.set(null);
+    }
   }
 
-  openModal() {
-    return this.isOpen.set(true)
+  toggleModal(modalId: string) {
+    console.log('Toggling modal:', modalId);
+    console.log('Current modal before:', this.currentModalId());
+
+    if (this.currentModalId() === modalId) {
+      this.currentModalId.set(null);
+    } else {
+      this.currentModalId.set(modalId);
+    }
+
+    console.log('Current modal after:', this.currentModalId());
   }
 }

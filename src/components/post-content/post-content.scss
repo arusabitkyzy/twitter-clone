@@ -1,0 +1,21 @@
+.post {
+  display: flex;
+  gap: 10px;
+  width: 500px
+}
+.post_content{
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  text-align: left;
+  margin-top: 5px
+}
+.post_text {
+   margin: 5px 0;
+ }
+.post-img {
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+  border-radius: 10px;
+}
