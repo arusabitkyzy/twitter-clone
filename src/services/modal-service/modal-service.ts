@@ -13,7 +13,8 @@ export class ModalService {
     }
   }
 
-  toggleModal(modalId: string) {
+  toggleModal($event: any, modalId: string) {
+    $event.stopPropagation();
     console.log('Toggling modal:', modalId);
     console.log('Current modal before:', this.currentModalId());
 

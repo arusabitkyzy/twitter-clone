@@ -2,6 +2,7 @@ import {Component, inject, input, output, signal} from '@angular/core';
 import {FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators} from '@angular/forms';
 import {Avatar} from '../ui/avatar/avatar';
 import {AppStore} from '../../services/auth-service/auth.store';
+import {LoadingBar} from '../loading-bar/loading-bar';
 
 type EditorMode = 'postCreation' | 'commentCreation';
 
@@ -11,7 +12,8 @@ type EditorMode = 'postCreation' | 'commentCreation';
   imports: [
     Avatar,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    LoadingBar
   ],
   templateUrl: './post-editor.html',
   styleUrl: './post-editor.scss',
@@ -73,7 +75,10 @@ export class PostEditor {
    onSubmit() {
      if(this.form.invalid) return;
      this.isLoading.set(true)
-     const payload = {...this.form.value, createdAt: new Date()};
+     const payload = {
+       ...this.form.value,
+       author: this.currentUser(),
+       createdAt: new Date()};
 
      this.submitted.emit(payload)
      this.isLoading.set(false)

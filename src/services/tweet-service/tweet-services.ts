@@ -229,6 +229,12 @@ export class TweetServices {
     }
   }
 
+  getTweetById(tweetId: string): TweetInfo | null {
+    const tweet =  this.tweets().find(tweet => tweet.uid === tweetId);
+    if(!tweet) return null;
+    return tweet;
+  }
+
   didCurrentUserRepostedTweet(tweetInfo: TweetInfo): boolean {
     return this.currentUser()()?.repostedTweets?.includes(tweetInfo.uid) ?? false; // Call as function
   }

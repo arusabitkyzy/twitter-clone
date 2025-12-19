@@ -6,6 +6,7 @@ import {AuthLayout} from './auth-layout/auth-layout';
 import {SignUp} from './auth/sign-up/sign-up';
 import {Login} from './auth/login/login';
 import { redirectLoginIfNotAuthenticated} from '../services/auth-service/access.guard';
+import {TweetDetails} from '../components/tweet-details/tweet-details';
 
 export const routes: Routes = [
   {
@@ -13,6 +14,8 @@ export const routes: Routes = [
     component: MainLayout,
     children: [
       { path: '', component: Home },
+      { path: 'tweet/:id', component: TweetDetails},
+      { path: 'tweet/:username/:id', component: TweetDetails},
     ],
     canActivate: [redirectLoginIfNotAuthenticated]
   },

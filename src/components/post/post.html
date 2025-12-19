@@ -1,4 +1,4 @@
-<div class="post-container">
+<div class="post-container" (click)="navigateToPostDetails()">
   <app-post-content [tweet]="tweet"/>
   @if(mode() == 'detailed') {
     <div class="post-info">

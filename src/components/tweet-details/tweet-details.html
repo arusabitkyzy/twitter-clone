@@ -1,0 +1,57 @@
+<div>
+  <div class="header_container">
+    <div class="header">
+      <mat-icon
+        fontSet="material-icons"
+        class="mat-icon"
+        style="font-size: 20px;"
+        (click)="navigateBack()"
+      >
+        arrow_back
+      </mat-icon>
+      <span class="header_text">Post</span>
+    </div>
+    <div class="header">
+        <app-modal modalId="commentsModal-{{tweet()?.uid}}">
+          <div trigger class="post-info-detail">
+            <button class="header_button">Reply</button>
+          </div>
+          <div content>
+            <app-comments-modal [tweet]="tweet()!"/>
+          </div>
+        </app-modal>
+      <mat-icon
+        fontSet="material-icons"
+        class="mat-icon"
+        style="font-size: 20px;"
+      >
+        tune
+      </mat-icon>
+    </div>
+  </div>
+  @if(tweet()) {
+    <app-post [tweet]="tweet()!" mode="detailed"></app-post>
+
+    <app-loading-bar [isLoading]="isLoading()"/>
+    <div class="comment_form_container">
+      <app-post-editor placeholder="Post your reply" submitLabel="Reply" (submitted)="onSubmit($event)"/>
+    </div>
+
+    @if(tweet()!.comments && tweet()!.comments.length > 0) {
+      <div class="comments-list">
+        @for(comment of tweet()!.comments; track comment.uid) {
+          @if(comment.author) {
+            <div (click)="navigateTweet(comment)">
+              <app-post [tweet]="comment" mode="detailed"></app-post>
+            </div>
+          }
+        }
+      </div>
+    } @else {
+      <div class="no-comments">No comments yet</div>
+    }
+  } @else {
+    <div class="loading">Loading...</div>
+  }
+</div>
+

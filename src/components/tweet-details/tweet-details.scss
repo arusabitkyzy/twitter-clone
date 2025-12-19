@@ -1,0 +1,41 @@
+.mat-icon {
+  cursor: pointer;
+  padding: 2px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.header_container {
+  display: flex;
+  height: 50px;
+  max-width: 100%;
+  background-color: rgba(0,0,0,0.9);
+  position: sticky;
+  top: 0;
+  padding: 10px 20px;
+  align-items: center;
+  justify-content: space-between;
+}
+.header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.header_text {
+  font-weight: bold;
+  font-size: 20px;
+}
+.header_button {
+  outline: none;
+  background-color: transparent;
+  border-radius: 30px;
+  border: 1px solid rgb(83, 100, 113);
+  color: #eff3f4;
+  padding: 7px 14px;
+  font-size: 14px
+}
+.comment_form_container {
+  padding: 20px 10px;
+}

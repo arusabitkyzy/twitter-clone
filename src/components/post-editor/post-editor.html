@@ -2,7 +2,6 @@
   <app-avatar [user]="currentUser()"></app-avatar>
   <form [formGroup]="form" (submit)="onSubmit()">
     <input type="text" formControlName="contentText" [placeholder]="placeholder()"/>
-    <div class="divider"></div>
     <div>
       @if(!selectedImageUrl()) {
         <div class="custom-file-upload" (click)="fileInput.click()">
@@ -29,8 +28,4 @@
     </div>
   </form>
 </div>
-@if(isLoading()) {
-  <div class="loading-bar-container">
-    <div class="loading-bar"></div>
-  </div>
-}
+<app-loading-bar [isLoading]="isLoading()"></app-loading-bar>

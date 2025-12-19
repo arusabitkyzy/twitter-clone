@@ -8,6 +8,7 @@ import {Modal} from '../modal/modal';
 import {PostAuthor} from '../ui/post-author/post-author';
 import {PostEditor} from '../post-editor/post-editor';
 import {PostContent} from '../post-content/post-content';
+import {Router} from '@angular/router';
 
 type PostView = 'detailed' | 'shortcut';
 
@@ -25,6 +26,7 @@ type PostView = 'detailed' | 'shortcut';
 })
 export class Post {
   tweetService = inject(TweetServices)
+  router = inject(Router);
 
   @Input() tweet = {} as TweetInfo
   isLiked = signal(false);
@@ -50,7 +52,7 @@ export class Post {
     this.repostCount.set(this.tweet.reposts)
     this.isReposted.set(repostStatus)
 
-    const commentsCount = this.tweet.comments.length
+    const commentsCount = this.tweet.comments?.length
     this.commentsCount.set(commentsCount)
 
     console.log(this.mode())
@@ -109,6 +111,10 @@ export class Post {
     } catch(error) {
       console.log(error)
     }
+  }
+
+  navigateToPostDetails() {
+    return this.router.navigate(['/tweet', this.tweet.uid]);
   }
 
 }
